@@ -2,6 +2,8 @@ __pycache__/
 *.pyc
 build/
 dist/
+dist_onedir/
+build_onedir/
 *.spec
 *.sav
 *.meta

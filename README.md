@@ -1,36 +1,46 @@
 # Ski-E-O Balance Editor
 
 A small, open-source tool that changes the **money balance** in a save file of
-**Ski-E-O! Ski Resort Tycoon** (single-player). It shows your saves, creates a backup,
-and changes only 4 bytes of the file.
+**Ski-E-O! Ski Resort Tycoon** (single-player). Pick a save in a simple window, type the
+new balance, click Apply. A backup is made first and can be restored from the same window.
 
 > Unofficial fan tool. Not affiliated with the game's developers. Use at your own risk.
 
 ## Download
 
-- **Easiest:** download `ski_e_o_balance_editor.exe` from the
-  [Releases](../../releases) page and double-click it.
-- **From source:** you need [Python 3.8+](https://www.python.org/downloads/). Download
-  `ski_e_o_balance_editor.py` and run `python ski_e_o_balance_editor.py`.
-  No extra packages are required.
+**Windows (no install):**
+1. Download `ski_e_o_balance_editor_gui_v1.1.0.zip` from the [Releases](../../releases) page.
+2. **Extract the whole zip** (right-click > Extract All). Do not run it from inside the zip.
+3. Open the extracted folder and run `ski_e_o_balance_editor_gui.exe`.
+   Keep the `_internal` folder next to the `.exe`.
+
+**From source (any system with Python 3.10+, no extra packages):**
+```
+python ski_e_o_balance_editor_gui.py     # window version
+python ski_e_o_balance_editor.py         # console version
+```
+On Windows you can also double-click `run_gui.bat`.
 
 ### About antivirus warnings (please read)
 
-The `.exe` is an unsigned [PyInstaller](https://pyinstaller.org) build, and some antivirus
-engines flag such files by mistake. The v1.0.0 `.exe` was scanned on VirusTotal:
-**3 of 69 engines flagged it** (Sangfor, Zillya and SecureAge, using generic labels such
-as "Trojan.Stealer"); the other 66 found nothing.
-[Scan report](https://www.virustotal.com/gui/file/47d124efe8dd3905db3138bd287e694b3fbc9a993e7bf25ec5849a51565e5c0e)
+The `.exe` is an unsigned [PyInstaller](https://pyinstaller.org) build, and antivirus
+engines flag such files by mistake fairly often. Current status of the v1.1.0 `.exe`:
+
+- VirusTotal: **4 of 69 engines flag it** (Microsoft, Arctic Wolf, SecureAge, Skyhigh;
+  generic machine-learning style labels such as `Trojan:Win32/Wacatac.C!ml`).
+  [Scan report](https://www.virustotal.com/gui/file/bf7a3f7bf8b6b8381adf41159533d6a176fddee45f2cee418df15fdd208b03db)
+- I submitted the file to Microsoft as a false positive. *Result: pending* (this section
+  will be updated when Microsoft answers).
 
 I believe these are false positives, but you do not have to take my word for it:
 
 - The tool has **no network code**. It only reads/writes save files in
   `%LOCALAPPDATA%\Ski-E-O\SaveGames`, writes backups to your Documents folder, and runs
   `tasklist` once to check whether the game is running. Read the source to check.
-- If you would rather not run an `.exe`, **run the Python source instead**
-  (`python ski_e_o_balance_editor.py`), or build the `.exe` yourself (see below).
-- SHA-256 of the v1.0.0 `.exe`, to confirm your download is the scanned file:
-  `47D124EFE8DD3905DB3138BD287E694B3FBC9A993E7BF25EC5849A51565E5C0E`
+- If you would rather not run an `.exe`, **run the Python source instead** (see above),
+  or build the `.exe` yourself (see below).
+- SHA-256 of `ski_e_o_balance_editor_gui.exe` inside the zip, to confirm it is the scanned file:
+  `BF7A3F7BF8B6B8381ADF41159533D6A176FDDEE45F2CEE418DF15FDD208B03DB`
 
 Windows SmartScreen may also show a warning because the file is new and unsigned.
 
@@ -40,12 +50,11 @@ Windows SmartScreen may also show a warning because the file is new and unsigned
 2. *(Recommended)* In Steam, right-click the game > Properties > General, and turn off
    **Steam Cloud** for it. Otherwise Steam can bring back your old save.
 3. Start the tool.
-4. Choose **[1] Change the money balance of a save**.
-5. Pick your save from the list. Each entry shows the resort name, in-game date, when
-   it was saved, and the current balance. The game keeps several autosave slots;
-   the newest one (top of the list) is normally the one the game loads.
-6. Type the new balance (a whole number, e.g. `2000000`) and confirm with `y`.
-7. Start the game and load the save.
+4. **Step 1 - Pick a save.** The list shows one row per resort (its newest save) with the
+   current balance. Tick *Show all save slots* to see every autosave and manual save.
+5. **Step 2 - Set the new balance.** Type a whole number (for example `2000000`) or use the
+   quick-amount buttons, then click **Apply** and confirm.
+6. Start the game and load the save.
 
 ## Backups and restoring
 
@@ -55,9 +64,9 @@ Before every change the tool copies the save (and its `.meta` file) to:
 Documents\Ski-E-O Balance Editor Backups\<date_time>\
 ```
 
-To undo a change, start the tool and choose **[2] Restore a backup**. You can also copy
-the files from the backup folder back into `%LOCALAPPDATA%\Ski-E-O\SaveGames` by hand.
-Restoring also backs up your current file first, so nothing is lost by mistake.
+To undo a change use **Tools > Restore a backup...** (or **Tools > Open backups folder** to
+copy files back by hand into `%LOCALAPPDATA%\Ski-E-O\SaveGames`). Restoring also backs up
+your current file first, so nothing is lost by mistake.
 
 ## Where are the saves?
 
@@ -65,7 +74,8 @@ Restoring also backs up your current file first, so nothing is lost by mistake.
 %LOCALAPPDATA%\Ski-E-O\SaveGames
 ```
 (for example `C:\Users\<you>\AppData\Local\Ski-E-O\SaveGames`). Paste that into the
-Windows Explorer address bar to open it.
+Windows Explorer address bar to open it. The window has **Tools > Change save folder...**
+if yours is elsewhere.
 
 ## Safety checks built in
 
@@ -91,9 +101,10 @@ Windows Explorer address bar to open it.
 
 ```
 pip install pyinstaller
-pyinstaller --onefile --name ski_e_o_balance_editor ski_e_o_balance_editor.py
+pyinstaller --onedir --windowed --name ski_e_o_balance_editor_gui ski_e_o_balance_editor_gui.py
 ```
-The result is `dist\ski_e_o_balance_editor.exe`. Or run `build_exe.bat`.
+The result is in `dist\ski_e_o_balance_editor_gui\`. Or run `build_exe.bat`, which also
+creates the zip. Building yourself gives a different file hash than the release.
 
 ## Tests
 
@@ -105,7 +116,7 @@ The tests use a synthetic save, so no real save files are in this repository.
 ## Reporting problems
 
 Open an issue and include the tool version, what you did, and the message shown.
-**Do not upload your save file** unless asked: it contains your Steam ID. 
+**Do not upload your save file** unless asked: it contains your Steam ID.
 
 ## License
 

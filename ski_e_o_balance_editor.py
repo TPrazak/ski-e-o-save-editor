@@ -135,6 +135,8 @@ def list_saves(save_dir):
             "label": meta.get("DisplayName", ""),
             "ingame": str(meta.get("InGameDate", ""))[:10],
             "version": (meta.get("SaveMajorVersion"), meta.get("SaveMinorVersion")),
+            "playthrough": meta.get("PlaythroughId") or meta.get("ResortName") or name,
+            "is_auto": bool(meta.get("bIsAutoSave", name.lower().startswith("autosave"))),
         })
     saves.sort(key=lambda s: s["mtime"], reverse=True)
     return saves
@@ -183,6 +185,59 @@ def write_atomic(path, data):
                 os.remove(tmp)
             except OSError:
                 pass
+
+
+def apply_edit(sav_path, new_value):
+    """Back up, patch, write and verify. Returns the backup folder.
+
+    Raises EditorError on any problem; the original save is restored if
+    verification fails.
+    """
+    with open(sav_path, "rb") as f:
+        original = f.read()
+    patched = patch_balance(original, new_value)
+    backup_dir = make_backup(sav_path)
+    write_atomic(sav_path, patched)
+    with open(sav_path, "rb") as f:
+        after = f.read()
+    if read_balance(after) != new_value or len(after) != len(original):
+        shutil.copy2(os.path.join(backup_dir, os.path.basename(sav_path)), sav_path)
+        raise EditorError("Verification failed, so your original save was put back. Nothing was changed.")
+    return backup_dir
+
+
+def list_backups():
+    """Return backups newest first: dicts with dir, name, stamp, balance."""
+    root = backup_root()
+    entries = []
+    if not os.path.isdir(root):
+        return entries
+    for stamp in sorted(os.listdir(root), reverse=True):
+        d = os.path.join(root, stamp)
+        if not os.path.isdir(d):
+            continue
+        for name in sorted(os.listdir(d)):
+            if name.lower().endswith(".sav"):
+                try:
+                    with open(os.path.join(d, name), "rb") as f:
+                        bal = read_balance(f.read())
+                except (OSError, EditorError):
+                    bal = None
+                entries.append({"dir": d, "name": name, "stamp": stamp, "balance": bal})
+    return entries
+
+
+def restore_backup(entry, save_dir):
+    """Copy a backup over the live save. Backs up the current file first and
+    returns that safety-backup folder (or None if there was no current file)."""
+    target = os.path.join(save_dir, entry["name"])
+    pre = make_backup(target) if os.path.isfile(target) else None
+    for ext in (".sav", ".meta"):
+        src = os.path.join(entry["dir"], os.path.splitext(entry["name"])[0] + ext)
+        if os.path.isfile(src):
+            with open(src, "rb") as f:
+                write_atomic(os.path.join(save_dir, os.path.basename(src)), f.read())
+    return pre
 
 
 # --------------------------------------------------------------------------
@@ -274,18 +329,7 @@ def edit_flow():
         print("Cancelled. Nothing was changed.")
         return
 
-    with open(chosen["path"], "rb") as f:
-        original = f.read()
-    patched = patch_balance(original, new)
-
-    backup_dir = make_backup(chosen["path"])
-    write_atomic(chosen["path"], patched)
-
-    with open(chosen["path"], "rb") as f:
-        after = f.read()
-    if read_balance(after) != new or len(after) != len(original):
-        shutil.copy2(os.path.join(backup_dir, chosen["name"]), chosen["path"])
-        raise EditorError("Verification failed, so your original save was put back. Nothing was changed.")
+    backup_dir = apply_edit(chosen["path"], new)
 
     print(f"\nDone. The balance in {chosen['name']} is now {new:,}.")
     print(f"A backup was saved to:\n  {backup_dir}")
@@ -294,23 +338,9 @@ def edit_flow():
 
 
 def restore_flow():
-    root = backup_root()
-    if not os.path.isdir(root):
-        raise EditorError("No backups found yet. They are created automatically when you edit a save.")
-    entries = []
-    for stamp in sorted(os.listdir(root), reverse=True):
-        d = os.path.join(root, stamp)
-        for name in os.listdir(d) if os.path.isdir(d) else []:
-            if name.lower().endswith(".sav"):
-                p = os.path.join(d, name)
-                try:
-                    with open(p, "rb") as f:
-                        bal = read_balance(f.read())
-                except (OSError, EditorError):
-                    bal = None
-                entries.append({"dir": d, "name": name, "stamp": stamp, "balance": bal})
+    entries = list_backups()
     if not entries:
-        raise EditorError("No backups found yet.")
+        raise EditorError("No backups found yet. They are created automatically when you edit a save.")
     print("\nBackups (newest first):\n")
     for i, e in enumerate(entries, 1):
         b = f"{e['balance']:,}" if e["balance"] is not None else "?"
@@ -328,18 +358,12 @@ def restore_flow():
         if ask("Continue anyway? (y/n): ").lower() != "y":
             print("Cancelled.")
             return
-    target = os.path.join(save_dir, chosen["name"])
     if ask(f"Overwrite {chosen['name']} in your SaveGames with this backup? (y/n): ").lower() != "y":
         print("Cancelled.")
         return
-    if os.path.isfile(target):
-        pre = make_backup(target)  # keep the current file too
+    pre = restore_backup(chosen, save_dir)
+    if pre:
         print(f"(Your current file was backed up first to: {pre})")
-    for ext in (".sav", ".meta"):
-        src = os.path.join(chosen["dir"], os.path.splitext(chosen["name"])[0] + ext)
-        if os.path.isfile(src):
-            with open(src, "rb") as f:
-                write_atomic(os.path.join(save_dir, os.path.basename(src)), f.read())
     print("Restored.")
 
 

@@ -10,12 +10,14 @@ This tool lets you set your money balance in a save file. It lists your saves, m
 
 [h2]Download[/h2]
 [list]
-[*] Easiest: the .exe from the Releases page: https://github.com/TPrazak/ski-e-o-balance-editor/releases
-[*] Or the source code (needs Python): same page
+[*] Easiest (Windows): download [b]ski_e_o_balance_editor_gui_v1.1.0.zip[/b] from the Releases page: https://github.com/TPrazak/ski-e-o-balance-editor/releases
+[*] Extract the [b]whole[/b] zip (right-click > Extract All), then run [b]ski_e_o_balance_editor_gui.exe[/b] from the extracted folder. Do not run it from inside the zip.
+[*] Or run the Python source (needs Python 3.10+): same page
 [/list]
-[b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. On VirusTotal, 3 of 69 engines flagged it (Sangfor, Zillya, SecureAge; generic "Trojan.Stealer" labels) and 66 found nothing: https://www.virustotal.com/gui/file/47d124efe8dd3905db3138bd287e694b3fbc9a993e7bf25ec5849a51565e5c0e
+[b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. On VirusTotal, 4 of 69 engines flag it (Microsoft, Arctic Wolf, SecureAge, Skyhigh; generic machine-learning labels such as "Wacatac.C!ml"): https://www.virustotal.com/gui/file/bf7a3f7bf8b6b8381adf41159533d6a176fddee45f2cee418df15fdd208b03db
+I submitted the file to Microsoft as a false positive; the result is pending.
 I believe these are false positives, but you do not have to trust me: the tool contains no network code, and the full source is on GitHub so you can read it. If you are unsure, [b]run the Python source instead of the .exe[/b].
-SHA-256 of the .exe: [code]47D124EFE8DD3905DB3138BD287E694B3FBC9A993E7BF25EC5849A51565E5C0E[/code]
+SHA-256 of the .exe inside the zip: [code]BF7A3F7BF8B6B8381ADF41159533D6A176FDDEE45F2CEE418DF15FDD208B03DB[/code]
 
 [h2]Before you start[/h2]
 [olist]
@@ -28,22 +30,21 @@ SHA-256 of the .exe: [code]47D124EFE8DD3905DB3138BD287E694B3FBC9A993E7BF25EC5849
 [h2]How to use it[/h2]
 [olist]
 [*] Start the tool.
-[*] Type [b]1[/b] (Change the money balance).
-[*] Pick your save. You see the resort name, in-game date, when it was saved and the current balance. The newest autosave is at the top.
-[*] Type the new balance, for example [b]2000000[/b], and confirm with [b]y[/b].
+[*] [b]Step 1:[/b] pick your save. The list shows one row per resort (its newest save) with the current balance. Tick "Show all save slots" to see every autosave and manual save.
+[*] [b]Step 2:[/b] type the new balance, for example [b]2000000[/b] (or click a quick-amount button), then click [b]Apply[/b] and confirm.
 [*] Start the game and load that save.
 [/olist]
 
 [h2]Undo / restore a backup[/h2]
 Every change is backed up automatically to:
 [code]Documents\Ski-E-O Balance Editor Backups[/code]
-Start the tool and choose [b]2[/b] (Restore a backup), or copy the files back into the SaveGames folder yourself.
+In the tool open [b]Tools > Restore a backup...[/b], pick the backup and confirm. You can also use [b]Tools > Open backups folder[/b] and copy the files back into the SaveGames folder yourself.
 
 [h2]Good to know[/h2]
 [list]
 [*] Only the balance changes. Loans keep their interest and schedule.
 [*] Very large numbers can overflow. Maximum is 2,147,483,647, but 1-10 million is safer.
-[*] The game has several autosave slots; edit the newest one, or the slot you load.
+[*] The game has several save slots per resort; the list shows the newest one by default. Tick "Show all save slots" if you load an older one.
 [*] Tested with save version 51.102. After a game update the tool may refuse to edit, which is intentional.
 [*] Never share your save file publicly: it contains your Steam ID.
 [/list]
