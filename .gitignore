@@ -4,6 +4,8 @@ build/
 dist/
 dist_onedir/
 build_onedir/
+dist_release/
+build_release/
 *.spec
 *.sav
 *.meta

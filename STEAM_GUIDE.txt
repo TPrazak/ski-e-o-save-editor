@@ -1,23 +1,32 @@
 Steam guide text (Steam BBCode). Copy everything below the line into the guide editor.
-Suggested title: Change your money balance (save editor, single-player)
+Title:  Save editor: money, loans, reputation, staff (single-player)
+Thumbnail: assets/guide_image_512.png
+Description (short box on the first page):
+  A small open-source save editor. Pick a save in a simple window and change your money, loans, reputation level/XP or staff. Automatic backups and one-click restore. Single-player only, unofficial fan tool.
 -----------------------------------------------------------------------
 
-[h1]Change your money balance (save editor)[/h1]
+[h1]Save editor: money, loans, reputation, staff[/h1]
 
 [b]Unofficial fan tool for single-player. Use at your own risk. Not affiliated with the developers.[/b]
 
-This tool lets you set your money balance in a save file. It lists your saves, makes a backup first, and changes only the balance. It is open source, so you can read exactly what it does.
+An open-source tool that lets you change, in a save file:
+[list]
+[*] [b]Money balance[/b]
+[*] [b]Loans[/b] (remaining amount and interest)
+[*] [b]Reputation[/b] (level 1-14 and XP progress)
+[*] [b]Staff[/b] (refill stamina, wages, XP)
+[/list]
+It lists your saves, makes a backup before every change, verifies the result, and can restore backups. The full source code is public, so you can read exactly what it does.
 
 [h2]Download[/h2]
 [list]
-[*] Easiest (Windows): download [b]ski_e_o_balance_editor_gui_v1.1.0.zip[/b] from the Releases page: https://github.com/TPrazak/ski-e-o-balance-editor/releases
-[*] Extract the [b]whole[/b] zip (right-click > Extract All), then run [b]ski_e_o_balance_editor_gui.exe[/b] from the extracted folder. Do not run it from inside the zip.
+[*] Easiest (Windows): download [b]ski_e_o_save_editor_gui_v1.2.0.zip[/b] from the Releases page: https://github.com/TPrazak/ski-e-o-save-editor/releases
+[*] Extract the [b]whole[/b] zip (right-click > Extract All), then run [b]ski_e_o_save_editor_gui.exe[/b] from the extracted folder. Do not run it from inside the zip.
 [*] Or run the Python source (needs Python 3.10+): same page
 [/list]
-[b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. On VirusTotal, 4 of 69 engines flag it (Microsoft, Arctic Wolf, SecureAge, Skyhigh; generic machine-learning labels such as "Wacatac.C!ml"): https://www.virustotal.com/gui/file/bf7a3f7bf8b6b8381adf41159533d6a176fddee45f2cee418df15fdd208b03db
-I submitted the file to Microsoft as a false positive; the result is pending.
-I believe these are false positives, but you do not have to trust me: the tool contains no network code, and the full source is on GitHub so you can read it. If you are unsure, [b]run the Python source instead of the .exe[/b].
-SHA-256 of the .exe inside the zip: [code]BF7A3F7BF8B6B8381ADF41159533D6A176FDDEE45F2CEE418DF15FDD208B03DB[/code]
+[b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. VirusTotal result for this version: [b]3 of 70[/b] engines flag the .exe (Arctic Wolf, SecureAge, Skyhigh; generic labels), the other 67 find nothing, [b]including Microsoft Defender[/b]. Report: https://www.virustotal.com/gui/file/1ad4df5450b8f3109d4632391e4ed66acd8a92106dc91a3692d9ce887528b86d
+I believe any detections are false positives, but you do not have to trust me: the tool contains no network code, and the full source is on GitHub so you can read it. If you are unsure, [b]run the Python source instead of the .exe[/b].
+SHA-256 of the .exe inside the zip: [code]1AD4DF5450B8F3109D4632391E4ED66ACD8A92106DC91A3692D9CE887528B86D[/code]
 
 [h2]Before you start[/h2]
 [olist]
@@ -31,23 +40,66 @@ SHA-256 of the .exe inside the zip: [code]BF7A3F7BF8B6B8381ADF41159533D6A176FDDE
 [olist]
 [*] Start the tool.
 [*] [b]Step 1:[/b] pick your save. The list shows one row per resort (its newest save) with the current balance. Tick "Show all save slots" to see every autosave and manual save.
-[*] [b]Step 2:[/b] type the new balance, for example [b]2000000[/b] (or click a quick-amount button), then click [b]Apply[/b] and confirm.
+[*] [b]Step 2:[/b] change something. Type a new balance and click [b]Apply[/b], or use the [b]Loans...[/b], [b]Reputation...[/b] or [b]Staff...[/b] buttons. Every change shows a confirmation first.
 [*] Start the game and load that save.
 [/olist]
+Screenshots of each step are in the "Screenshots" section below.
+
+[h2]Money balance[/h2]
+Type a whole number, for example [b]2000000[/b], or click a quick-amount button, then [b]Apply[/b].
+
+[h2]Loans[/h2]
+Click [b]Loans...[/b]. Each loan shows its original amount, what is left, and the monthly interest. Type new values (any remaining amount from 0, interest from 0% to 100% per month), or use [i]Remaining -> 0 for all[/i] and [i]Interest -> 0% for all[/i].
+A loan with [b]0 remaining[/b] stays on the list with a "pay off" button. Click it in the game to remove the loan; it costs nothing. A loan with 0% interest only costs its principal.
+
+[h2]Reputation[/h2]
+Click [b]Reputation...[/b] and pick a level (1-14) and the XP progress inside that level. XP restarts at 0 after a level-up. XP needed to level up:
+[code]1  Small Hill               280
+2  Hidden Gem              1,050
+3  Local Favorite          2,300
+4  Powder Stash            4,950
+5  Regional Hotspot        9,050
+6  Rising Star            18,700
+7  Destination Resort     35,000
+8  Powder Mecca           65,000
+9  Premier Mountain      130,000
+10 Elite Resort          230,000
+11 Prestigious Destination 350,000
+12 World Class           600,000
+13 Iconic Destination    900,000
+14 Legendary Resort      (maximum)[/code]
+Going down a level may lock buildings you unlocked earlier. At the top level the game no longer shows the exact XP. If you enter XP at or above the level-up amount, the game will most likely level up when you load the save.
+
+[h2]Staff[/h2]
+Click [b]Staff...[/b]. You see each role (liftie, groomer, ski patrol, maintenance) with headcount, average wage, XP and stamina. Choose everybody or one role, then any of:
+[list]
+[*] [b]Refill stamina to 100%[/b]
+[*] [b]Daily wage[/b]: set to an amount, or scale by a percent (never below 1)
+[*] [b]XP[/b]: enough XP makes a promotion available in the game
+[/list]
+Wages and XP stay as set; stamina drains normally while employees work.
+
+[h2]Screenshots[/h2]
+(Add the screenshots here, in this order, each with its caption.)
+[b]1. Pick a save[/b] - one row per resort, newest save. (docs/screenshots/main.png)
+[b]2. Loans[/b] - change the remaining amount and interest. (docs/screenshots/loans.png)
+[b]3. Reputation[/b] - pick the level and XP progress. (docs/screenshots/reputation.png)
+[b]4. Staff[/b] - stamina, wages and XP for everybody or one role. (docs/screenshots/staff.png)
+[b]5. Confirm[/b] - check the old and new values, then click Yes.
+[b]6. Done[/b] - the change is made and a backup was saved to your Documents folder.
 
 [h2]Undo / restore a backup[/h2]
 Every change is backed up automatically to:
-[code]Documents\Ski-E-O Balance Editor Backups[/code]
-In the tool open [b]Tools > Restore a backup...[/b], pick the backup and confirm. You can also use [b]Tools > Open backups folder[/b] and copy the files back into the SaveGames folder yourself.
+[code]Documents\Ski-E-O Save Editor Backups[/code]
+In the tool open [b]Tools > Restore a backup...[/b], pick the backup and confirm. You can also use [b]Tools > Open backups folder[/b] and copy the files back into the SaveGames folder yourself. Backups from older versions are still listed.
 
 [h2]Good to know[/h2]
 [list]
-[*] Only the balance changes. Loans keep their interest and schedule.
-[*] Very large numbers can overflow. Maximum is 2,147,483,647, but 1-10 million is safer.
+[*] Very large numbers can overflow. The balance maximum is 2,147,483,647, but 1-10 million is safer.
 [*] The game has several save slots per resort; the list shows the newest one by default. Tick "Show all save slots" if you load an older one.
 [*] Tested with save version 51.102. After a game update the tool may refuse to edit, which is intentional.
 [*] Never share your save file publicly: it contains your Steam ID.
 [/list]
 
 [h2]Problems?[/h2]
-If the game does not show the new balance: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (https://github.com/TPrazak/ski-e-o-balance-editor) with the message the tool showed.
+If the game does not show the change: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (https://github.com/TPrazak/ski-e-o-save-editor) with the message the tool showed.
