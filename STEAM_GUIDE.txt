@@ -1,4 +1,6 @@
 Steam guide text (Steam BBCode). Copy everything below the line into the guide editor.
+Published: https://steamcommunity.com/sharedfiles/filedetails/?id=3844881078
+Section names used on Steam: Overview (first section, everything up to "Download"), Download, Before you start, How to use it, Features, Screenshots, Undo / restore a backup, Good to know, Problems?
 Title:  Save editor: money, loans, reputation, staff (single-player)
 Thumbnail: assets/guide_image_512.png
 Description (short box on the first page):
@@ -102,4 +104,4 @@ In the tool open [b]Tools > Restore a backup...[/b], pick the backup and confirm
 [/list]
 
 [h2]Problems?[/h2]
-If the game does not show the change: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (https://github.com/TPrazak/ski-e-o-save-editor) with the message the tool showed.
+If the game does not show the change: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page with the message the tool showed: https://github.com/TPrazak/ski-e-o-save-editor
