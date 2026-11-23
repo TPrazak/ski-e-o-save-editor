@@ -1,4 +1,4 @@
-Steam guide text (Steam BBCode). Replace YOUR_GITHUB_LINK before posting.
+Steam guide text (Steam BBCode). Copy everything below the line into the guide editor.
 Suggested title: Change your money balance (save editor, single-player)
 -----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ This tool lets you set your money balance in a save file. It lists your saves, m
 
 [h2]Download[/h2]
 [list]
-[*] Easiest: the .exe from the Releases page: YOUR_GITHUB_LINK
+[*] Easiest: the .exe from the Releases page: https://github.com/TPrazak/ski-e-o-balance-editor/releases
 [*] Or the source code (needs Python): same page
 [/list]
 [b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. On VirusTotal, 3 of 69 engines flagged it (Sangfor, Zillya, SecureAge; generic "Trojan.Stealer" labels) and 66 found nothing: https://www.virustotal.com/gui/file/47d124efe8dd3905db3138bd287e694b3fbc9a993e7bf25ec5849a51565e5c0e
@@ -49,4 +49,4 @@ Start the tool and choose [b]2[/b] (Restore a backup), or copy the files back in
 [/list]
 
 [h2]Problems?[/h2]
-If the game does not show the new balance: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (YOUR_GITHUB_LINK) with the message the tool showed.
+If the game does not show the new balance: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (https://github.com/TPrazak/ski-e-o-balance-editor) with the message the tool showed.
