@@ -1,0 +1,52 @@
+Steam guide text (Steam BBCode). Replace YOUR_GITHUB_LINK before posting.
+Suggested title: Change your money balance (save editor, single-player)
+-----------------------------------------------------------------------
+
+[h1]Change your money balance (save editor)[/h1]
+
+[b]Unofficial fan tool for single-player. Use at your own risk. Not affiliated with the developers.[/b]
+
+This tool lets you set your money balance in a save file. It lists your saves, makes a backup first, and changes only the balance. It is open source, so you can read exactly what it does.
+
+[h2]Download[/h2]
+[list]
+[*] Easiest: the .exe from the Releases page: YOUR_GITHUB_LINK
+[*] Or the source code (needs Python): same page
+[/list]
+[b]About antivirus warnings:[/b] the .exe is an unsigned PyInstaller build and some antivirus engines flag those by mistake. On VirusTotal, 3 of 69 engines flagged it (Sangfor, Zillya, SecureAge; generic "Trojan.Stealer" labels) and 66 found nothing: https://www.virustotal.com/gui/file/47d124efe8dd3905db3138bd287e694b3fbc9a993e7bf25ec5849a51565e5c0e
+I believe these are false positives, but you do not have to trust me: the tool contains no network code, and the full source is on GitHub so you can read it. If you are unsure, [b]run the Python source instead of the .exe[/b].
+SHA-256 of the .exe: [code]47D124EFE8DD3905DB3138BD287E694B3FBC9A993E7BF25EC5849A51565E5C0E[/code]
+
+[h2]Before you start[/h2]
+[olist]
+[*] Close the game completely.
+[*] Turn off Steam Cloud for the game: right-click the game > Properties > General > untick "Keep game saves in the Steam Cloud". Otherwise Steam may restore your old save.
+[*] (Optional) Make your own copy of the save folder. Paste this into the Explorer address bar:
+[code]%LOCALAPPDATA%\Ski-E-O\SaveGames[/code]
+[/olist]
+
+[h2]How to use it[/h2]
+[olist]
+[*] Start the tool.
+[*] Type [b]1[/b] (Change the money balance).
+[*] Pick your save. You see the resort name, in-game date, when it was saved and the current balance. The newest autosave is at the top.
+[*] Type the new balance, for example [b]2000000[/b], and confirm with [b]y[/b].
+[*] Start the game and load that save.
+[/olist]
+
+[h2]Undo / restore a backup[/h2]
+Every change is backed up automatically to:
+[code]Documents\Ski-E-O Balance Editor Backups[/code]
+Start the tool and choose [b]2[/b] (Restore a backup), or copy the files back into the SaveGames folder yourself.
+
+[h2]Good to know[/h2]
+[list]
+[*] Only the balance changes. Loans keep their interest and schedule.
+[*] Very large numbers can overflow. Maximum is 2,147,483,647, but 1-10 million is safer.
+[*] The game has several autosave slots; edit the newest one, or the slot you load.
+[*] Tested with save version 51.102. After a game update the tool may refuse to edit, which is intentional.
+[*] Never share your save file publicly: it contains your Steam ID.
+[/list]
+
+[h2]Problems?[/h2]
+If the game does not show the new balance: make sure the game was closed while editing, Steam Cloud is off, and you loaded the edited slot. Restore a backup if anything looks wrong. Please report issues on the GitHub page (YOUR_GITHUB_LINK) with the message the tool showed.
